@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.animation as animation
+import time
 
 
 c = 1.0 # x 方向の輸送速度
@@ -71,6 +72,7 @@ def do_computing(x, y, q, dt, dx, dy, nmax, interval=2):
     ensemble(primary=dt, min=0.05, max=0.5, subsidiary=[dx, dy], condition=func)
 
     for n in range(1, nmax + 1):
+        _start = time.time()
         qold = q.copy()
         for j in range(1, jmax - 1):
             for k in range(1, kmax - 1):
@@ -81,6 +83,9 @@ def do_computing(x, y, q, dt, dx, dy, nmax, interval=2):
 
         if n % interval == 0:
             ax1.plot_wireframe(X, Y, q, color="black", rstride=1, cstride=1, linewidth=0.5)
+        _end = time.time()
+
+        print('Loop %d finished : %f' % (n, _end - _start))
 
     plt.show()
 
